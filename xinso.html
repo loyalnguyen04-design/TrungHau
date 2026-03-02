@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>✨ Xin Số Hôm Nay ✨</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    background: linear-gradient(135deg,#ff9a9e,#fad0c4,#fad0c4,#fbc2eb,#a18cd1);
+    background-size:400% 400%;
+    animation: gradientBG 10s ease infinite;
+    font-family:'Segoe UI', sans-serif;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+}
+
+/* Animation nền */
+@keyframes gradientBG {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+/* Hiển thị số */
+#number{
+    font-size:15vh;
+    font-weight:900;
+    text-align:center;
+    color:#fff;
+    text-shadow:0 0 20px #ff00cc,
+                0 0 40px #ff00cc,
+                0 0 60px #ff00cc;
+    transition:0.3s;
+}
+
+/* Rung nhẹ khi ra số */
+.boom{
+    animation: boom 0.3s ease;
+}
+
+@keyframes boom{
+    0%{transform:scale(1)}
+    50%{transform:scale(1.2)}
+    100%{transform:scale(1)}
+}
+
+/* Thanh điều khiển */
+.control{
+    margin-top:40px;
+    background:rgba(255,255,255,0.2);
+    backdrop-filter:blur(15px);
+    padding:20px 30px;
+    border-radius:20px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.3);
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-weight:bold;
+}
+
+input{
+    padding:8px;
+    font-size:18px;
+    width:80px;
+    text-align:center;
+    border-radius:10px;
+    border:none;
+}
+
+/* Nút đẹp */
+button{
+    padding:12px 30px;
+    font-size:20px;
+    font-weight:bold;
+    border:none;
+    border-radius:50px;
+    cursor:pointer;
+    background:linear-gradient(45deg,#ff00cc,#3333ff);
+    color:white;
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+    transition:0.3s;
+}
+
+button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 25px rgba(0,0,0,0.5);
+}
+
+button:active{
+    transform:scale(0.95);
+}
+</style>
+</head>
+
+<body>
+
+<div id="number">0000</div>
+
+<div class="control">
+    Xin:
+    <input type="number" id="soLuong" min="1" max="100" value="1">
+
+    Số chữ số:
+    <input type="number" id="soChuSo" min="1" max="10" value="2">
+
+    <button onclick="xinSo()">✨ XIN SỐ ✨</button>
+</div>
+
+<script>
+function xinSo(){
+
+    let soLuong = parseInt(document.getElementById("soLuong").value);
+    let soChuSo = parseInt(document.getElementById("soChuSo").value);
+
+    if(soLuong < 1 || soLuong > 100){
+        alert("Xin từ 1 đến 100 số!");
+        return;
+    }
+
+    if(soChuSo < 1 || soChuSo > 10){
+        alert("Số chữ số từ 1 đến 10!");
+        return;
+    }
+
+    let numberDiv = document.getElementById("number");
+
+    // Hiệu ứng quay số
+    let quay = 0;
+    let interval = setInterval(()=>{
+        let fake = "";
+        for(let i=0;i<soLuong;i++){
+            let temp = Math.floor(Math.random()*Math.pow(10,soChuSo))
+                        .toString()
+                        .padStart(soChuSo,'0');
+            fake += temp + "  ";
+        }
+        numberDiv.innerText = fake;
+        quay++;
+
+        if(quay>20){
+            clearInterval(interval);
+
+            let ketQua=[];
+            for(let i=0;i<soLuong;i++){
+                let so=Math.floor(Math.random()*Math.pow(10,soChuSo))
+                        .toString()
+                        .padStart(soChuSo,'0');
+                ketQua.push(so);
+            }
+
+            numberDiv.innerText = ketQua.join("  ");
+
+            // hiệu ứng boom
+            numberDiv.classList.add("boom");
+            setTimeout(()=>numberDiv.classList.remove("boom"),300);
+        }
+
+    },50);
+}
+</script>
+
+</body>
+</html>
