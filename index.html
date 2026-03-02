@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trung Hậu Portal</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",sans-serif;
+}
+
+body{
+    height:100vh;
+    background:url("mybackground.JPG") no-repeat center center fixed;
+    background-size:cover;
+    display:flex;
+}
+
+/* lớp phủ tối */
+.overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.65);
+}
+
+/* layout chính */
+.wrapper{
+    position:relative;
+    z-index:2;
+    display:flex;
+    width:100%;
+    padding:60px;
+}
+
+/* ===== BÊN TRÁI ===== */
+.left{
+    width:35%;
+}
+
+.left h1{
+    color:white;
+    margin-bottom:40px;
+    font-size:34px;
+    letter-spacing:2px;
+}
+
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+}
+
+.card{
+    padding:18px 22px;
+    background:rgba(255,255,255,0.1);
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:14px;
+    text-decoration:none;
+    color:white;
+    font-size:18px;
+    transition:0.3s;
+}
+
+.card:hover{
+    background:linear-gradient(135deg,#ff512f,#dd2476);
+    transform:translateX(10px);
+    box-shadow:0 10px 25px rgba(255,0,100,0.6);
+}
+
+/* ===== BÊN PHẢI ===== */
+.right{
+    width:65%;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    padding-right:30px;
+    overflow:hidden;
+    text-align:right;
+    color:white;
+    font-size:22px;
+    line-height:1.8;
+}
+
+.poem{
+    max-width:520px;
+    animation:scrollText 60s linear infinite;
+}
+
+/* animation chạy chậm */
+@keyframes scrollText{
+    0%{ transform:translateY(100%); }
+    100%{ transform:translateY(-100%); }
+}
+
+/* logo góc trái dưới */
+.logo{
+    position:fixed;
+    left:25px;
+    bottom:25px;
+    width:120px;
+    opacity:0.95;
+    transition:0.3s;
+}
+
+.logo:hover{
+    transform:scale(1.1);
+}
+
+</style>
+</head>
+<body>
+
+<div class="overlay"></div>
+
+<div class="wrapper">
+
+    <!-- MENU BÊN TRÁI -->
+    <div class="left">
+        <h1>TRUNG HẬU</h1>
+
+        <div class="menu">
+<a class="card" href="luong.html">Tính lương</a>
+        
+            <a class="card" href="Lotno tem giấy.html">Lotno Tem Giấy</a>
+            <a class="card" href="Lotno tem giấy 442 16roll.html">Lotno 442 - 16 Roll</a>
+            <a class="card" href="Lotno tem lõi.html">Lotno Tem Lõi</a>
+  <a class="card" href="met vai.html">Máy Tính Mét Vải</a>
+            <a class="card" href="Game lật thẻ.html">Game Lật Thẻ</a>
+
+        </div>
+    </div>
+
+    <!-- THƠ BÊN PHẢI -->
+    <div class="right">
+        <div class="poem">
+            Gió thổi qua đời như khói sương,<br><br>
+            Người đi để lại ánh tà dương.<br><br>
+            Tay cầm ước mộng xây tương lai,<br><br>
+            Tim giữ niềm tin giữa chiến trường.<br><br><br>
+
+            Đường dài mấy bước không lùi lại,<br><br>
+            Chữ tín dựng nên cả đại dương.<br><br>
+            Trung nghĩa vững vàng qua bão tố,<br><br>
+            Hậu vận rạng danh giữa vô thường.
+        </div>
+    </div>
+
+</div>
+
+<img src="1.png" class="logo">
+
+</body>
+</html>

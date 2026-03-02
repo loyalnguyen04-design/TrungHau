@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Memory Game Pro</title>
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:linear-gradient(135deg,#141e30,#243b55);
+    color:white;
+    text-align:center;
+}
+
+h1{ margin-top:15px; }
+
+.top-bar{
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    margin-top:10px;
+    font-size:18px;
+}
+
+.game-board{
+    margin:20px auto;
+    display:grid;
+    grid-template-columns:repeat(4,100px);
+    gap:15px;
+    width:max-content;
+}
+
+.card{
+    width:100px;
+    height:100px;
+    perspective:1000px;
+}
+
+.inner{
+    width:100%;
+    height:100%;
+    position:relative;
+    transform-style:preserve-3d;
+    transition:transform 0.4s;
+}
+
+.card.flip .inner{
+    transform:rotateY(180deg);
+}
+
+.front,.back{
+    position:absolute;
+    width:100%;
+    height:100%;
+    border-radius:12px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:40px;
+    backface-visibility:hidden;
+}
+
+.front{
+    background:white;
+    color:black;
+    transform:rotateY(180deg);
+}
+
+.back{
+    background:#ff9800;
+}
+
+button{
+    padding:8px 20px;
+    border:none;
+    border-radius:8px;
+    background:#4caf50;
+    color:white;
+    cursor:pointer;
+    margin-bottom:10px;
+}
+
+.scoreboard{
+    margin-top:10px;
+    font-size:14px;
+}
+</style>
+</head>
+<body>
+
+<h1>🎮 Memory Game Pro</h1>
+
+<div class="top-bar">
+    ⏱ Thời gian: <span id="time">0</span>s
+    🧮 Bước: <span id="moves">0</span>
+</div>
+
+<div class="game-board" id="board"></div>
+
+<button onclick="startGame()">Chơi lại</button>
+
+<div class="scoreboard">
+    <h3>🏆 Top 5 Thành Tích</h3>
+    <div id="scores"></div>
+</div>
+
+<script>
+const icons=["🍎","🍌","🍇","🍉","🍒","🥝","🍍","🍓"];
+let firstCard=null;
+let secondCard=null;
+let lock=false;
+let moves=0;
+let timer=0;
+let interval;
+let matched=0;
+
+function playSound(type){
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    const o=ctx.createOscillator();
+    const g=ctx.createGain();
+    o.connect(g);
+    g.connect(ctx.destination);
+    if(type==="flip") o.frequency.value=400;
+    if(type==="match") o.frequency.value=700;
+    if(type==="wrong") o.frequency.value=200;
+    if(type==="win") o.frequency.value=900;
+    o.start();
+    g.gain.exponentialRampToValueAtTime(0.00001,ctx.currentTime+0.3);
+}
+
+function shuffle(arr){
+    return arr.sort(()=>Math.random()-0.5);
+}
+
+function startTimer(){
+    interval=setInterval(()=>{
+        timer++;
+        document.getElementById("time").innerText=timer;
+    },1000);
+}
+
+function stopTimer(){
+    clearInterval(interval);
+}
+
+function startGame(){
+    const board=document.getElementById("board");
+    board.innerHTML="";
+    firstCard=null;
+    secondCard=null;
+    lock=false;
+    moves=0;
+    timer=0;
+    matched=0;
+    document.getElementById("moves").innerText=0;
+    document.getElementById("time").innerText=0;
+    stopTimer();
+    startTimer();
+
+    const cards=shuffle([...icons,...icons]);
+
+    cards.forEach(icon=>{
+        const card=document.createElement("div");
+        card.classList.add("card");
+        card.innerHTML=`
+            <div class="inner">
+                <div class="front">${icon}</div>
+                <div class="back"></div>
+            </div>
+        `;
+        card.addEventListener("click",()=>flipCard(card,icon));
+        board.appendChild(card);
+    });
+
+    loadScores();
+}
+
+function flipCard(card,icon){
+    if(lock||card.classList.contains("flip")) return;
+
+    playSound("flip");
+    card.classList.add("flip");
+
+    if(!firstCard){
+        firstCard={card,icon};
+    }else{
+        secondCard={card,icon};
+        moves++;
+        document.getElementById("moves").innerText=moves;
+        checkMatch();
+    }
+}
+
+function checkMatch(){
+    if(firstCard.icon===secondCard.icon){
+        playSound("match");
+        matched++;
+        firstCard=null;
+        secondCard=null;
+        if(matched===8){
+            winGame();
+        }
+    }else{
+        lock=true;
+        playSound("wrong");
+        setTimeout(()=>{
+            firstCard.card.classList.remove("flip");
+            secondCard.card.classList.remove("flip");
+            firstCard=null;
+            secondCard=null;
+            lock=false;
+        },800);
+    }
+}
+
+function winGame(){
+    stopTimer();
+    playSound("win");
+    saveScore(timer,moves);
+    setTimeout(()=>{
+        alert("🎉 Bạn thắng!\nThời gian: "+timer+"s\nBước: "+moves);
+    },200);
+}
+
+function saveScore(time,moves){
+    let scores=JSON.parse(localStorage.getItem("memoryScores"))||[];
+    scores.push({time,moves});
+    scores.sort((a,b)=>a.time-b.time||a.moves-b.moves);
+    scores=scores.slice(0,5);
+    localStorage.setItem("memoryScores",JSON.stringify(scores));
+    loadScores();
+}
+
+function loadScores(){
+    let scores=JSON.parse(localStorage.getItem("memoryScores"))||[];
+    let html="";
+    scores.forEach((s,i)=>{
+        html+=`${i+1}. ${s.time}s - ${s.moves} bước<br>`;
+    });
+    document.getElementById("scores").innerHTML=html||"Chưa có điểm";
+}
+
+startGame();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>HỆ THỐNG TÍNH LƯƠNG</title>
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.container{
+    background:white;
+    width:950px;
+    padding:35px;
+    border-radius:25px;
+    box-shadow:0 25px 50px rgba(0,0,0,0.25);
+    animation:fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(20px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+h1{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px 25px;
+}
+
+label{
+    font-weight:600;
+    font-size:14px;
+}
+
+input{
+    width:100%;
+    padding:11px;
+    border-radius:12px;
+    border:1px solid #ccc;
+    outline:none;
+    transition:0.3s;
+}
+
+input:focus{
+    border:1px solid #667eea;
+    box-shadow:0 0 12px rgba(102,126,234,0.4);
+    transform:scale(1.03);
+}
+
+button{
+    padding:13px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(45deg,#667eea,#764ba2);
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 20px rgba(0,0,0,0.25);
+}
+
+button:active{
+    transform:scale(0.95);
+}
+
+.btn-group{
+    grid-column:span 2;
+    display:flex;
+    gap:12px;
+}
+
+.result{
+    margin-top:30px;
+    padding:25px;
+    background:#f4f6ff;
+    border-radius:20px;
+    display:none;
+    animation:slideUp 0.6s ease;
+}
+
+@keyframes slideUp{
+    from{opacity:0; transform:translateY(30px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+.highlight{
+    font-size:24px;
+    font-weight:bold;
+    color:#e63946;
+    margin-top:10px;
+}
+
+hr{
+    margin:12px 0;
+}
+
+@media print {
+    body * { visibility:hidden; }
+    #ketQua, #ketQua * { visibility:visible; }
+    #ketQua{
+        position:absolute;
+        left:0;
+        top:0;
+        width:100%;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>TÍNH LƯƠNG (THEO GIỜ)</h1>
+
+<div class="grid">
+
+<label>Họ và tên</label>
+<input type="text" id="hoTen" placeholder="Nhập họ tên nhân viên">
+
+<label>Tháng / Năm</label>
+<input type="text" id="thangNam" placeholder="VD: 03/2026">
+
+<label>Bộ phận</label>
+<input type="text" id="boPhan" placeholder="VD: Sản xuất">
+
+<label>Tổng Lương</label>
+<input type="number" id="luongCoBan" placeholder="VD: 7859 = 7.859.000">
+
+<label>Lương đóng BHXH</label>
+<input type="number" id="luongBH" placeholder="Nhập theo nghìn">
+
+<label>Giờ công</label>
+<input type="number" id="gioCong" placeholder="VD: 208">
+
+<label>Giờ tăng ca thường</label>
+<input type="number" id="tangCa" placeholder="Số giờ">
+
+<label>Giờ trợ cấp đêm</label>
+<input type="number" id="caDem" placeholder="Số giờ">
+
+<label>Giờ tăng ca Chủ nhật</label>
+<input type="number" id="tangCaCN" placeholder="Số giờ">
+
+<label>Giờ tăng ca CN đêm</label>
+<input type="number" id="tangCaCNDem" placeholder="Số giờ">
+
+<label>Số suất cơm 25K</label>
+<input type="number" id="com25" placeholder="Số suất">
+
+<label>Số suất cơm 15K</label>
+<input type="number" id="com15" placeholder="Số suất">
+
+<label>Thưởng</label>
+<input type="number" id="thuong" placeholder="Nhập theo nghìn">
+
+<label>Tiền công đoàn (cố định)</label>
+<input type="number" value="50" readonly>
+
+<div class="btn-group">
+<button onclick="tinhLuong()">TÍNH LƯƠNG</button>
+<button onclick="window.print()">🖨 IN BẢNG LƯƠNG</button>
+</div>
+
+</div>
+
+<div class="result" id="ketQua"></div>
+
+</div>
+
+<script>
+function format(n){
+    return Math.floor(n).toLocaleString('vi-VN');
+}
+
+function autoMoney(value){
+    let number = parseFloat(value) || 0;
+    if(number < 100000){
+        return number * 1000;
+    }
+    return number;
+}
+
+function tinhLuong(){
+
+    let hoTen = document.getElementById("hoTen").value;
+    let thangNam = document.getElementById("thangNam").value;
+    let boPhan = document.getElementById("boPhan").value;
+
+    let luongCoBan = autoMoney(document.getElementById("luongCoBan").value);
+    let luongBH = autoMoney(document.getElementById("luongBH").value);
+
+    let gioCong = parseFloat(document.getElementById("gioCong").value) || 0;
+    let tangCa = parseFloat(document.getElementById("tangCa").value) || 0;
+    let caDem = parseFloat(document.getElementById("caDem").value) || 0;
+    let tangCaCN = parseFloat(document.getElementById("tangCaCN").value) || 0;
+    let tangCaCNDem = parseFloat(document.getElementById("tangCaCNDem").value) || 0;
+
+    let com25 = parseFloat(document.getElementById("com25").value) || 0;
+    let com15 = parseFloat(document.getElementById("com15").value) || 0;
+    let thuong = autoMoney(document.getElementById("thuong").value);
+
+    let congDoan = 50000;
+
+    let luongGio = luongCoBan / 26 / 8;
+    let tienLuongChinh = luongGio * gioCong;
+
+    let gioChuan = luongBH / 26 / 8;
+
+    let tienTangCa = tangCa * gioChuan * 1.5;
+    let tienCaDem = caDem * gioChuan * 0.3;
+    let tienTangCaCN = tangCaCN * gioChuan * 2;
+    let tienTangCaCNDem = tangCaCNDem * gioChuan * 2.7;
+
+    let tienCom = (com25 * 25000) + (com15 * 15000);
+
+    let tongLuong = tienLuongChinh + tienTangCa + tienCaDem +
+                    tienTangCaCN + tienTangCaCNDem +
+                    tienCom + thuong;
+
+    let bhxh = luongBH * 0.105;
+    let tongTru = bhxh + congDoan;
+    let thucLanh = tongLuong - tongTru;
+
+    let box = document.getElementById("ketQua");
+    box.style.display = "block";
+
+    box.innerHTML = `
+        <h2 style="text-align:center;">BẢNG LƯƠNG</h2>
+        Họ tên: <b>${hoTen}</b><br>
+        Tháng: <b>${thangNam}</b><br>
+        Bộ phận: <b>${boPhan}</b><hr>
+
+        Lương giờ: <b>${format(luongGio)}</b> VNĐ<br>
+        Lương làm việc (${gioCong} giờ): <b>${format(tienLuongChinh)}</b> VNĐ<br>
+        Tăng ca: <b>${format(tienTangCa)}</b> VNĐ<br>
+        Trợ cấp đêm: <b>${format(tienCaDem)}</b> VNĐ<br>
+        Tăng ca CN: <b>${format(tienTangCaCN)}</b> VNĐ<br>
+        Tăng ca CN đêm: <b>${format(tienTangCaCNDem)}</b> VNĐ<br>
+        Tiền cơm: <b>${format(tienCom)}</b> VNĐ<br>
+        Thưởng: <b>${format(thuong)}</b> VNĐ<hr>
+
+        Tổng lương: <b>${format(tongLuong)}</b> VNĐ<br>
+        BHXH (10.5%): <b>${format(bhxh)}</b> VNĐ<br>
+        Công đoàn: <b>50.000</b> VNĐ<br>
+        Tổng trừ: <b>${format(tongTru)}</b> VNĐ<hr>
+
+        <div class="highlight">
+            THỰC LÃNH: ${format(thucLanh)} VNĐ
+        </div>
+    `;
+
+    box.scrollIntoView({behavior:"smooth"});
+}
+</script>
+
+</body>
+</html>

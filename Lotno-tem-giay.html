@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Lot Number Pro - Black Gold</title>
+
+<style>
+/* ===== LOGO 7 MÀU GÓC TRÁI ===== */
+.logo-rainbow {
+  position: fixed;
+  bottom: 25px;
+  left: 30px;
+  font-size: 48px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  font-family: 'Segoe UI', sans-serif;
+  text-transform: uppercase;
+  background: linear-gradient(
+    90deg,
+    red,
+    orange,
+    yellow,
+    green,
+    cyan,
+    blue,
+    violet,
+    red
+  );
+  background-size: 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbowMove 6s linear infinite;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Animation chuyển 7 màu */
+@keyframes rainbowMove {
+  0% { background-position: 0% }
+  100% { background-position: 400% }
+}
+
+/* Không in logo */
+@media print {
+  .logo-rainbow {
+    display: none !important;
+  }
+}
+
+/* ===== BACKGROUND ĐEN SANG ===== */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #0f0f0f;
+  color: #d4af37;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+  max-width: 520px;
+  margin: 60px auto;
+  padding: 30px;
+  border-radius: 12px;
+  background: #161616;
+  border: 1px solid rgba(212,175,55,0.2);
+  box-shadow: 0 0 40px rgba(0,0,0,0.8);
+}
+
+/* ===== TITLE ===== */
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+/* ===== INPUT ===== */
+label {
+  display: block;
+  margin-top: 15px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(212,175,55,0.8);
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 6px;
+  border: 1px solid rgba(212,175,55,0.3);
+  background: #0f0f0f;
+  color: white;
+  font-size: 14px;
+}
+
+input:focus {
+  border-color: #d4af37;
+  outline: none;
+  box-shadow: 0 0 8px rgba(212,175,55,0.4);
+}
+
+/* ===== BUTTON ===== */
+button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 11px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.btn-main {
+  background: linear-gradient(90deg, #b8860b, #ffd700);
+  color: #111;
+}
+
+.btn-main:hover {
+  transform: translateY(-2px);
+}
+
+.btn-print {
+  background: #222;
+  color: #d4af37;
+  border: 1px solid rgba(212,175,55,0.4);
+}
+
+.btn-print:hover {
+  background: #1a1a1a;
+}
+
+/* ===== PRINT TABLE ===== */
+.page {
+  page-break-after: always;
+}
+
+.print-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background: white;
+  color: black;
+}
+
+.print-table td {
+  border: 1px solid #000;
+  height: 35px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* ===== PRINT MODE ===== */
+@media print {
+  body * { visibility: hidden; }
+  #result, #result * { visibility: visible; }
+  #result {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>Tạo Lotno Tem Giấy</h2>
+
+<label>LotNo:</label>
+<input type="text" id="lotNo" placeholder="VD: 5G0101">
+
+<label>Số Tay bắt đầu:</label>
+<input type="number" id="startCuon" min="1" value="1">
+
+<label>Số Tay kết thúc:</label>
+<input type="number" id="endCuon" min="1" value="1">
+
+<label>Số roll trên 1 Tay:</label>
+<input type="number" id="rollPerCuon" min="1" value="10">
+
+<label>Đóng bao nhiêu roll:</label>
+<input type="number" id="quyCach" min="1" value="1">
+
+<button class="btn-main" onclick="taoLot()">TẠO LOT</button>
+<button class="btn-print" onclick="window.print()">IN A4</button>
+
+</div>
+
+<div id="result"></div>
+
+<script>
+
+/* ===== LOT LOGIC GIỮ NGUYÊN ===== */
+function taoLot() {
+
+  const lotNo = document.getElementById('lotNo').value.trim();
+  const startCuon = parseInt(document.getElementById('startCuon').value);
+  const endCuon = parseInt(document.getElementById('endCuon').value);
+  const rollPerCuon = parseInt(document.getElementById('rollPerCuon').value);
+  const quyCach = parseInt(document.getElementById('quyCach').value);
+
+  if (!lotNo) {
+    alert("Vui lòng nhập LotNo");
+    return;
+  }
+
+  if (startCuon > endCuon) {
+    alert("Cuộn bắt đầu phải nhỏ hơn cuộn kết thúc");
+    return;
+  }
+
+  let allLabels = [];
+
+  for (let cuon = startCuon; cuon <= endCuon; cuon++) {
+
+    let cuonStr = String(cuon).padStart(2, '0');
+    let rollCounter = 1;
+
+    while (rollCounter <= rollPerCuon) {
+
+      if (quyCach === 1) {
+        allLabels.push(lotNo + cuonStr + "/" + String(rollCounter).padStart(2, '0'));
+        rollCounter++;
+      } else {
+        let start = rollCounter;
+        let end = Math.min(rollCounter + quyCach - 1, rollPerCuon);
+
+        allLabels.push(
+          lotNo + cuonStr + "/" +
+          String(start).padStart(2, '0') +
+          "~" +
+          String(end).padStart(2, '0')
+        );
+
+        rollCounter = end + 1;
+      }
+    }
+  }
+
+  const rowsPerCol = 24;
+  const colsPerPage = 4;
+  const labelsPerPage = rowsPerCol * colsPerPage;
+
+  let resultHTML = "";
+
+  for (let pageStart = 0; pageStart < allLabels.length; pageStart += labelsPerPage) {
+
+    resultHTML += '<div class="page"><table class="print-table">';
+
+    for (let row = 0; row < rowsPerCol; row++) {
+      resultHTML += "<tr>";
+      for (let col = 0; col < colsPerPage; col++) {
+        let index = pageStart + col * rowsPerCol + row;
+        resultHTML += "<td>" + (allLabels[index] || "") + "</td>";
+      }
+      resultHTML += "</tr>";
+    }
+
+    resultHTML += "</table></div>";
+  }
+
+  document.getElementById("result").innerHTML = resultHTML;
+}
+
+</script>
+
+</body>
+<div class="logo-rainbow">Trung Hậu</div>
+</html>
