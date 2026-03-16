@@ -1,164 +1,229 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trung Hậu Portal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trung Hậu Portal - Sakai Dojo</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Noto+Serif+JP:wght@300;500&display=swap" rel="stylesheet">
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:"Segoe UI",sans-serif;
-}
+    <style>
+        :root {
+            --maple-red: #d94141; /* Màu đỏ sáng hơn tí */
+            --dark-samurai: #080a09;
+            --gold-leaf: #daa520; /* Màu vàng sáng hơn */
+            --glass-white: rgba(255, 255, 255, 0.1); /* Tăng độ sáng kính */
+            --border-dusk: rgba(184, 134, 11, 0.4);
+        }
 
-body{
-    height:100vh;
-    background:url("mybackground.JPG") no-repeat center center fixed;
-    background-size:cover;
-    display:flex;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Noto Serif JP", serif;
+        }
 
-/* lớp phủ tối */
-.overlay{
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,0.65);
-}
+        body {
+            height: 100vh;
+            /* Làm sáng nền bằng cách thay đổi gradient */
+            background: linear-gradient(rgba(0,0,0,0.05), rgba(0,0,0,0.1)), url("mybackground.jpg") center/cover no-repeat fixed;
+            color: #fff;
+            overflow: hidden;
+        }
 
-/* layout chính */
-.wrapper{
-    position:relative;
-    z-index:2;
-    display:flex;
-    width:100%;
-    padding:60px;
-}
+        /* Container chứa lá phong bay */
+        #maple-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
 
-/* ===== BÊN TRÁI ===== */
-.left{
-    width:35%;
-}
+        .overlay {
+            position: absolute;
+            inset: 0;
+            /* Giảm độ tối xuống để nhìn rõ nền hơn */
+            background: rgba(0, 0, 0, 0); 
+            pointer-events: none;
+            z-index: 1;
+        }
 
-.left h1{
-    color:white;
-    margin-bottom:40px;
-    font-size:34px;
-    letter-spacing:2px;
-}
+        .wrapper {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            width: 100%;
+            height: 100%;
+            padding: 70px 90px;
+        }
 
-.menu{
-    display:flex;
-    flex-direction:column;
-    gap:22px;
-}
+        /* PANEL TRÁI */
+        .left {
+            width: 25%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
 
-.card{
-    padding:18px 22px;
-    background:rgba(255,255,255,0.1);
-    border:1px solid rgba(255,255,255,0.2);
-    border-radius:14px;
-    text-decoration:none;
-    color:white;
-    font-size:18px;
-    transition:0.3s;
-}
+        .title {
+            font-family: "Cinzel", serif;
+            font-size: 40px;
+            letter-spacing: 12px;
+            margin-bottom: 50px;
+            color: var(--red-leaf);
+            text-shadow: 0 0 20px rgba(218, 165, 32, 0.6);
+            border-left: 4px solid var(--maple-red);
+            padding-left: 25px;
+        }
 
-.card:hover{
-    background:linear-gradient(135deg,#ff512f,#dd2476);
-    transform:translateX(10px);
-    box-shadow:0 10px 25px rgba(255,0,100,0.6);
-}
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
 
-/* ===== BÊN PHẢI ===== */
-.right{
-    width:65%;
-    display:flex;
-    justify-content:flex-end;
-    align-items:center;
-    padding-right:30px;
-    overflow:hidden;
-    text-align:right;
-    color:white;
-    font-size:22px;
-    line-height:1.8;
-}
+        .card {
+            padding: 16px 30px;
+            background: var(--glass-white);
+            border: 1px solid var(--border-dusk);
+            text-decoration: none;
+            color: black;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
 
-.poem{
-    max-width:520px;
-    animation:scrollText 60s linear infinite;
-}
+        .card:hover {
+            background: rgba(217, 65, 65, 0.2);
+            transform: translateX(20px);
+            box-shadow: -10px 0 25px rgba(217, 65, 65, 0.4);
+            border-color: var(--maple-red);
+        }
 
-/* animation chạy chậm */
-@keyframes scrollText{
-    0%{ transform:translateY(100%); }
-    100%{ transform:translateY(-100%); }
-}
+        /* PANEL PHẢI - THƠ */
+        .right {
+            width: 60%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-/* logo góc trái dưới */
-.logo{
-    position:fixed;
-    left:25px;
-    bottom:25px;
-    width:120px;
-    opacity:0.95;
-    transition:0.3s;
-}
+        .poem {
+            font-style: italic;
+            font-size: 26px;
+            line-height: 2.3;
+            text-align: right;
+            padding-right: 40px;
+            color: #fff9c4; /* Màu vàng chanh rất nhẹ, sáng hơn */
+            mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+            height: 450px;
+            overflow: hidden;
+            position: relative;
+        }
 
-.logo:hover{
-    transform:scale(1.1);
-}
+        .poem-content {
+            /* Chạy ngay lập tức và mượt hơn */
+            animation: scrollPoem 40s linear infinite;
+        }
 
-</style>
+        @keyframes scrollPoem {
+            0% { transform: translateY(100%); }
+            100% { transform: translateY(-130%); }
+        }
+
+        /* HIỆU ỨNG LÁ PHONG */
+        .leaf {
+            position: absolute;
+            fill: var(--maple-red);
+            filter: drop-shadow(0 0 5px rgba(217, 65, 65, 0.5));
+            animation: fall linear infinite, sway ease-in-out infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translate(0, -60px) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.9; }
+            90% { opacity: 0.9; }
+            100% { transform: translate(70vw, 100vh) rotate(1000deg); opacity: 0; }
+        }
+
+        @keyframes sway {
+            0%, 100% { margin-left: 0; }
+            50% { margin-left: 60px; }
+        }
+    </style>
 </head>
 <body>
 
-<div class="overlay"></div>
+    <div id="maple-container"></div>
+    <div class="overlay"></div>
 
-<div class="wrapper">
+    <div class="wrapper">
+        <div class="left">
+            <div class="title">TRUNG HẬU</div>
+            <div class="menu">
+                <a class="card" href="luong.html">Tính lương</a>
+                <a class="card" href="Lotno tem giấy.html">Lotno Tem Giấy</a>
+                <a class="card" href="21roll.html">OVN479 21roll 15cm</a>
+                <a class="card" href="Lotno tem giấy 442 16roll.html">Lotno 442 - 16 Roll</a>
+                <a class="card" href="Lotno tem lõi.html">Lotno Tem Lõi</a>
+                <a class="card" href="met vai.html">Máy Tính Mét Vải</a>
+                <a class="card" href="xinso.html">Xin Số May Mắn</a>
+                <a class="card" href="Game lật thẻ.html">Game Lật Thẻ</a>
+            </div>
+        </div>
 
-    <!-- MENU BÊN TRÁI -->
-    <div class="left">
-        <h1>TRUNG HẬU</h1>
-
-        <div class="menu">
-            <a class="card" href="xinso.html">Xin số may mắn</a>
-<a class="card" href="Luong.html">Tính lương</a>
-        
-            <a class="card" href="Lotno-tem-giay.html">Lotno Tem Giấy</a>
-            <a class="card" href="21roll.html">OVN479 21roll 15cm</a>
-            <a class="card" href="Lotno-442-16roll.html">Lotno 442 - 16 Roll</a>
-            <a class="card" href="Lotno-tem-loi.html">Lotno Tem Lõi</a>
-  <a class="card" href="met-vai.html">Máy Tính Mét Vải</a>
-            <a class="card" href="Game-lật-thẻ.html">Game Lật Thẻ</a>
-
+        <div class="right">
+            <div class="poem">
+                <div class="poem-content">
+                    Gió thổi qua đời như khói sương,<br><br>
+                    Người đi để lại ánh tà dương.<br><br>
+                    Tay cầm ước mộng xây tương lai,<br><br>
+                    Tim giữ niềm tin giữa chiến trường.<br><br><br>
+                    Đường dài mấy bước không lùi lại,<br><br>
+                    Chữ tín dựng nên cả đại dương.<br><br>
+                    Trung nghĩa vững vàng qua bão tố,<br><br>
+                    Hậu vận rạng danh giữa vô thường.
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- THƠ BÊN PHẢI -->
-    <div class="right">
-        <div class="poem">
-            Gió thổi qua đời như khói sương,<br><br>
-            Người đi để lại ánh tà dương.<br><br>
-            Tay cầm ước mộng xây tương lai,<br><br>
-            Tim giữ niềm tin giữa chiến trường.<br><br><br>
+    <script>
+        function createMapleLeaf() {
+            const container = document.getElementById('maple-container');
+            if(!container) return;
 
-            Đường dài mấy bước không lùi lại,<br><br>
-            Chữ tín dựng nên cả đại dương.<br><br>
-            Trung nghĩa vững vàng qua bão tố,<br><br>
-            Hậu vận rạng danh giữa vô thường.
-        </div>
-    </div>
+            const leaf = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            leaf.setAttribute("class", "leaf");
+            leaf.setAttribute("viewBox", "0 0 512 512");
+            
+            leaf.innerHTML = `<path d="M499.7,219.1c-12.8-19.1-39.1-23.7-58.8-11.4c-4.4,2.8-8.2,6.4-11.3,10.6c-4.9-20.1-17.7-38.1-36.1-49.9 c-24.3-15.6-56.1-13.6-78.5,4c-1.3,1-2.5,2.1-3.7,3.3c0.1-4.8,0.1-9.6-0.2-14.3c-1.2-28.8-21.7-53.1-48.4-58 c-26.6-4.9-53.5,9.6-63.5,34.1c-1.9,4.7-3.1,9.6-3.8,14.6c-5.9-6.9-13.7-12.2-22.7-14.8c-23.3-6.9-48,5.1-57.7,28.2 c-3,7.2-4.1,14.8-3.4,22.2c-15-7-33-8.2-49.3-2.1c-22.3,8.4-36.2,30.6-33.1,53.8c0.7,5.5,2.4,10.8,4.9,15.7 C19.9,252.3,5.2,270.3,1.3,291.5c-4.2,22.8,7.9,45.4,28.7,53.2c4.8,1.8,9.8,2.7,14.9,2.7c13.2,0,25.9-6,34-16.7 c-2.2,16.5,2.9,33.2,14.4,45.5c17,18.1,43.9,23.3,66.1,12.8c4.2-2,8-4.7,11.1-8.1c4.2,20.2,17.1,38.3,35.6,49.9 c24.4,15.3,56.2,13.1,78.5-4.6c1.2-1,2.4-2,3.5-3.1c-0.2,4.6-0.3,9.3,0,13.9c1.6,28.8,22.4,52.8,49.1,57.4 c26.7,4.6,53.5-10.1,63.2-34.7c1.8-4.6,2.9-9.5,3.5-14.3c6,6.7,13.9,11.8,22.9,14.2c23.3,6.3,47.8-6.1,57.1-29.4 c2.8-7.1,3.8-14.6,3-21.9c15,6.5,32.8,7.3,48.9,1c22-8.7,35.6-31.1,32.2-54.2c-0.8-5.3-2.6-10.5-5.2-15.3 C492.3,260.1,505.7,240.5,499.7,219.1z"/>`;
+            
+            const size = Math.random() * 15 + 10;
+            leaf.style.width = size + 'px';
+            leaf.style.left = (Math.random() * 120 - 20) + 'vw';
+            
+            const fallDuration = Math.random() * 8 + 6;
+            const swayDuration = Math.random() * 2 + 3;
+            
+            leaf.style.animationDuration = `${fallDuration}s, ${swayDuration}s`;
+            leaf.style.animationDelay = `-${Math.random() * 10}s`;
 
-</div>
+            container.appendChild(leaf);
 
-<img src="1.png" class="logo">
+            setTimeout(() => { leaf.remove(); }, fallDuration * 1000);
+        }
 
+        for(let i = 0; i < 30; i++) createMapleLeaf();
+        setInterval(createMapleLeaf, 250);
+    </script>
 </body>
-
 </html>
-
-
-
-
