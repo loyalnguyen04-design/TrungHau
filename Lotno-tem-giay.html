@@ -51,7 +51,7 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: #0f0f0f;
+  background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.2)), url("mybackground.jpg") center/cover no-repeat fixed;
   color: #d4af37;
 }
 
@@ -146,11 +146,11 @@ button {
 }
 
 .print-table td {
-  border: 1px solid #000;
-  height: 35px;
+  border: 1.5px solid #000;
+  height: 44px;
   text-align: center;
   vertical-align: middle;
-  font-size: 20px;
+  font-size: 28px;
   font-weight: bold;
 }
 
@@ -245,8 +245,8 @@ function taoLot() {
     }
   }
 
-  const rowsPerCol = 24;
-  const colsPerPage = 4;
+  const rowsPerCol = 20;
+  const colsPerPage = 3;
   const labelsPerPage = rowsPerCol * colsPerPage;
 
   let resultHTML = "";
