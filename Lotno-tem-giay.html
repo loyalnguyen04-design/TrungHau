@@ -2,276 +2,239 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Lot Number Pro - Black Gold</title>
+<title>Tem Giay</title>
 
 <style>
-/* ===== LOGO 7 MÀU GÓC TRÁI ===== */
-.logo-rainbow {
-  position: fixed;
-  bottom: 25px;
-  left: 30px;
-  font-size: 48px;
-  font-weight: 900;
-  letter-spacing: 4px;
-  font-family: 'Segoe UI', sans-serif;
-  text-transform: uppercase;
-  background: linear-gradient(
-    90deg,
-    red,
-    orange,
-    yellow,
-    green,
-    cyan,
-    blue,
-    violet,
-    red
-  );
-  background-size: 400%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: rainbowMove 6s linear infinite;
-  pointer-events: none;
-  z-index: 9999;
+/* ===== HIỆU ỨNG THIÊN NHIÊN (LÁ TRÚC BAY CHÉO) ===== */
+.bamboo-leaf {
+  position: fixed; z-index: 9999;
+  user-select: none; pointer-events: none;
+  animation: fallDiagonally linear infinite;
+  color: #4f772d; opacity: 0;
 }
 
-/* Animation chuyển 7 màu */
-@keyframes rainbowMove {
-  0% { background-position: 0% }
-  100% { background-position: 400% }
-}
-
-/* Không in logo */
-@media print {
-  .logo-rainbow {
-    display: none !important;
+@keyframes fallDiagonally {
+  0% { 
+    transform: translate(0, 0) rotate(0deg); 
+    top: var(--start-y); 
+    left: var(--start-x); 
+    opacity: 0; 
+  }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { 
+    transform: translate(100vw, 100vh) rotate(1080deg); 
+    top: var(--start-y); 
+    left: var(--start-x); 
+    opacity: 0; 
   }
 }
 
-/* ===== BACKGROUND ĐEN SANG ===== */
+/* ===== GIAO DIỆN CHUNG ===== */
 body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.2)), url("mybackground.jpg") center/cover no-repeat fixed;
-  color: #d4af37;
+  margin: 0; font-family: 'Segoe UI', serif;
+  background: #f1f8e9;
+  background-image: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), 
+                    url('https://www.transparenttextures.com/patterns/natural-paper.png');
+  color: #1b5e20;
+  overflow-x: hidden;
 }
 
-/* ===== CONTAINER ===== */
+.logo-nature {
+  position: fixed; bottom: 25px; left: 30px; font-size: 28px; font-weight: 900;
+  color: #2d6a4f; border-left: 5px solid #a7c957; padding-left: 10px;
+  z-index: 9999; text-transform: uppercase;
+}
+
 .container {
-  max-width: 520px;
-  margin: 60px auto;
-  padding: 30px;
-  border-radius: 12px;
-  background: #161616;
-  border: 1px solid rgba(212,175,55,0.2);
-  box-shadow: 0 0 40px rgba(0,0,0,0.8);
+  max-width: 650px; margin: 40px auto; padding: 30px;
+  border-radius: 20px; background: #ffffff; 
+  border: 2px solid #a7c957;
+  box-shadow: 0 10px 30px rgba(45, 106, 79, 0.1);
+  position: relative; z-index: 10; overflow: hidden;
 }
 
-/* ===== TITLE ===== */
-h2 {
-  text-align: center;
-  margin-bottom: 25px;
-  letter-spacing: 1px;
-  font-weight: 600;
+.container::before {
+  content: '🎋'; position: absolute; top: -10px; right: -10px; 
+  font-size: 80px; opacity: 0.1; transform: rotate(15deg);
 }
 
-/* ===== INPUT ===== */
-label {
-  display: block;
-  margin-top: 15px;
-  font-size: 13px;
-  font-weight: 600;
-  color: rgba(212,175,55,0.8);
+h2 { 
+  text-align: center; margin-top: 0; color: #386641; 
+  text-transform: uppercase; letter-spacing: 2px;
+  border-bottom: 2px dashed #bc6c25; padding-bottom: 10px;
 }
+
+.grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+label { display: block; margin-top: 10px; font-size: 13px; font-weight: 600; color: #606c38; }
 
 input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 6px;
-  border-radius: 6px;
-  border: 1px solid rgba(212,175,55,0.3);
-  background: #0f0f0f;
-  color: white;
-  font-size: 14px;
+  width: 100%; padding: 10px; margin-top: 5px; box-sizing: border-box;
+  border-radius: 8px; border: 1px solid #ccd5ae; 
+  background: #fefae0; color: #283618; outline: none;
 }
 
-input:focus {
-  border-color: #d4af37;
-  outline: none;
-  box-shadow: 0 0 8px rgba(212,175,55,0.4);
-}
-
-/* ===== BUTTON ===== */
 button {
-  width: 100%;
-  margin-top: 18px;
-  padding: 11px;
-  border-radius: 6px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 14px;
-  transition: 0.3s;
+  width: 100%; margin-top: 20px; padding: 14px; border-radius: 50px;
+  border: none; font-weight: bold; cursor: pointer; transition: 0.4s;
+  text-transform: uppercase;
 }
+.btn-main { background: linear-gradient(135deg, #6a994e, #386641); color: white; }
+.btn-print { background: transparent; color: #bc6c25; margin-top: 15px; border: 2px solid #bc6c25; }
 
-.btn-main {
-  background: linear-gradient(90deg, #b8860b, #ffd700);
-  color: #111;
-}
-
-.btn-main:hover {
-  transform: translateY(-2px);
-}
-
-.btn-print {
-  background: #222;
-  color: #d4af37;
-  border: 1px solid rgba(212,175,55,0.4);
-}
-
-.btn-print:hover {
-  background: #1a1a1a;
-}
-
-/* ===== PRINT TABLE ===== */
-.page {
-  page-break-after: always;
-}
-
-.print-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-  background: white;
-  color: black;
-}
-
+#result { background: white; color: black; position: relative; z-index: 5; }
+.page { page-break-after: always; padding: 20px; }
+.print-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .print-table td {
-  border: 1.5px solid #000;
-  height: 44px;
-  text-align: center;
-  vertical-align: middle;
-  font-size: 28px;
-  font-weight: bold;
+  border: 1px solid #000; text-align: center; vertical-align: middle;
+  word-break: break-all; padding: 5px; font-weight: bold;
 }
 
-/* ===== PRINT MODE ===== */
 @media print {
   body * { visibility: hidden; }
   #result, #result * { visibility: visible; }
-  #result {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-  }
+  #result { position: absolute; top: 0; left: 0; width: 100%; }
+  .bamboo-leaf, .logo-nature { display: none !important; }
 }
-
 </style>
 </head>
 
 <body>
 
+<div class="logo-nature">Trung Hậu</div>
+
 <div class="container">
-<h2>Tạo Lotno Tem Giấy</h2>
+  <h2>🌿 Tem Giấy 🌿</h2>
+  
+  <label>Mã LotNo:</label>
+  <input type="text" id="lotNo" value="5G0101">
 
-<label>LotNo:</label>
-<input type="text" id="lotNo" placeholder="VD: 5G0101">
+  <div class="grid-inputs">
+    <div>
+      <label>Số Tay bắt đầu:</label>
+      <input type="number" id="startCuon" value="1">
+    </div>
+    <div>
+      <label>Số Tay kết thúc:</label>
+      <input type="number" id="endCuon" value="1">
+    </div>
+    <div>
+      <label>Số roll/Tay:</label>
+      <input type="number" id="rollPerCuon" value="10">
+    </div>
+    <div>
+      <label>Số roll/tem:</label>
+      <input type="number" id="quyCach" value="1">
+    </div>
+  </div>
 
-<label>Số Tay bắt đầu:</label>
-<input type="number" id="startCuon" min="1" value="1">
+  <hr style="border: 0; height: 1px; background: #ccd5ae; margin: 25px 0;">
 
-<label>Số Tay kết thúc:</label>
-<input type="number" id="endCuon" min="1" value="1">
+  <div class="grid-inputs">
+    <div>
+      <label>Số cột (ngang):</label>
+      <input type="number" id="inputCols" value="3">
+    </div>
+    <div>
+      <label>Số dòng (dọc):</label>
+      <input type="number" id="inputRows" value="20">
+    </div>
+    <div>
+      <label>Cỡ chữ (px):</label>
+      <input type="number" id="fontSize" value="25">
+    </div>
+    <div>
+      <label>Chiều cao ô (px):</label>
+      <input type="number" id="cellHeight" value="44">
+    </div>
+  </div>
 
-<label>Số roll trên 1 Tay:</label>
-<input type="number" id="rollPerCuon" min="1" value="10">
-
-<label>Đóng bao nhiêu roll:</label>
-<input type="number" id="quyCach" min="1" value="1">
-
-<button class="btn-main" onclick="taoLot()">TẠO LOT</button>
-<button class="btn-print" onclick="window.print()">IN A4</button>
-
+  <button class="btn-main" onclick="taoLot()">KHỞI TẠO BẢN IN</button>
+  <button class="btn-print" onclick="window.print()">XUẤT FILE IN</button>
 </div>
 
 <div id="result"></div>
 
 <script>
+// Hiệu ứng lá tre bay chéo
+function createLeaf() {
+  const leaf = document.createElement('div');
+  leaf.classList.add('bamboo-leaf');
+  leaf.innerHTML = '🍃'; 
+  let startX, startY;
+  if (Math.random() > 0.5) {
+    startY = '-50px'; startX = Math.random() * 100 + 'vw';
+  } else {
+    startX = '-50px'; startY = Math.random() * 100 + 'vh';
+  }
+  const duration = Math.random() * 8 + 6 + 's'; 
+  const size = Math.random() * 15 + 12 + 'px';
+  leaf.style.setProperty('--start-x', startX);
+  leaf.style.setProperty('--start-y', startY);
+  leaf.style.animationDuration = duration;
+  leaf.style.fontSize = size;
+  document.body.appendChild(leaf);
+  setTimeout(() => leaf.remove(), 15000);
+}
+setInterval(createLeaf, 700);
 
-/* ===== LOT LOGIC GIỮ NGUYÊN ===== */
+// LOGIC ĐÃ CẬP NHẬT: Tự động ẩn dấu "~" nếu chỉ có 1 roll cuối
 function taoLot() {
-
   const lotNo = document.getElementById('lotNo').value.trim();
   const startCuon = parseInt(document.getElementById('startCuon').value);
   const endCuon = parseInt(document.getElementById('endCuon').value);
   const rollPerCuon = parseInt(document.getElementById('rollPerCuon').value);
   const quyCach = parseInt(document.getElementById('quyCach').value);
+  
+  const colsPerPage = parseInt(document.getElementById('inputCols').value);
+  const rowsPerCol = parseInt(document.getElementById('inputRows').value);
+  const fSize = document.getElementById('fontSize').value + "px";
+  const cHeight = document.getElementById('cellHeight').value + "px";
 
-  if (!lotNo) {
-    alert("Vui lòng nhập LotNo");
-    return;
-  }
-
-  if (startCuon > endCuon) {
-    alert("Cuộn bắt đầu phải nhỏ hơn cuộn kết thúc");
-    return;
-  }
+  if (!lotNo) { alert("Vui lòng nhập LotNo"); return; }
 
   let allLabels = [];
-
   for (let cuon = startCuon; cuon <= endCuon; cuon++) {
-
     let cuonStr = String(cuon).padStart(2, '0');
     let rollCounter = 1;
-
     while (rollCounter <= rollPerCuon) {
-
-      if (quyCach === 1) {
-        allLabels.push(lotNo + cuonStr + "/" + String(rollCounter).padStart(2, '0'));
-        rollCounter++;
+      let start = rollCounter;
+      let end = Math.min(rollCounter + quyCach - 1, rollPerCuon);
+      
+      // Kiểm tra: Nếu start bằng end thì chỉ hiện 1 số
+      if (start === end) {
+        allLabels.push(lotNo + cuonStr + "/" + String(start).padStart(2, '0'));
       } else {
-        let start = rollCounter;
-        let end = Math.min(rollCounter + quyCach - 1, rollPerCuon);
-
-        allLabels.push(
-          lotNo + cuonStr + "/" +
-          String(start).padStart(2, '0') +
-          "~" +
-          String(end).padStart(2, '0')
-        );
-
-        rollCounter = end + 1;
+        allLabels.push(lotNo + cuonStr + "/" + String(start).padStart(2, '0') + "~" + String(end).padStart(2, '0'));
       }
+      
+      rollCounter = end + 1;
     }
   }
 
-  const rowsPerCol = 20;
-  const colsPerPage = 3;
   const labelsPerPage = rowsPerCol * colsPerPage;
-
   let resultHTML = "";
 
   for (let pageStart = 0; pageStart < allLabels.length; pageStart += labelsPerPage) {
-
     resultHTML += '<div class="page"><table class="print-table">';
-
     for (let row = 0; row < rowsPerCol; row++) {
-      resultHTML += "<tr>";
+      resultHTML += `<tr style="height: ${cHeight}">`;
       for (let col = 0; col < colsPerPage; col++) {
-        let index = pageStart + col * rowsPerCol + row;
-        resultHTML += "<td>" + (allLabels[index] || "") + "</td>";
+        let index = pageStart + (col * rowsPerCol) + row;
+        resultHTML += `<td style="font-size: ${fSize}">${allLabels[index] || ""}</td>`;
       }
       resultHTML += "</tr>";
     }
-
     resultHTML += "</table></div>";
   }
 
   document.getElementById("result").innerHTML = resultHTML;
+  if(allLabels.length > 0) {
+    window.scrollTo({ top: document.getElementById('result').offsetTop, behavior: 'smooth' });
+  }
 }
-
 </script>
 
 </body>
-<div class="logo-rainbow">Trung Hậu</div>
 </html>
