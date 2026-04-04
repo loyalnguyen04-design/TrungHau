@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trái Tim Hoàn Hảo</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, #2b001e 0%, #000 100%); /* Giữ background cũ */
+            overflow: hidden;
+            font-family: 'Pacifico', cursive;
+            cursor: none; 
+        }
+
+        .cute-text {
+            font-size: 5rem;
+            text-align: center;
+            z-index: 10;
+            background: linear-gradient(45deg, #ff007f, #ff85a1, #f9bec7, #ff007f);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(255, 20, 147, 0.8));
+            animation: floatText 3s ease-in-out infinite, colorShift 5s linear infinite;
+            user-select: none;
+        }
+
+        @keyframes floatText {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes colorShift {
+            to { background-position: 200% center; }
+        }
+
+        /* 1. Hiệu ứng trái tim rơi (Giữ nguyên bản trước) */
+        .falling-heart {
+            position: absolute;
+            color: #ff4d6d;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg) scale(0); opacity: 0; }
+            10% { opacity: 0.8; }
+            100% { transform: translateY(110vh) rotate(360deg) scale(1.5); opacity: 0; }
+        }
+
+        /* 2. Hiệu ứng trái tim theo chuột (To hơn) */
+        .cursor-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+            font-size: 40px; /* Tăng kích thước trái tim ở chuột */
+            animation: explode 1s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+            100% { 
+                transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(2); 
+                opacity: 0; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cute-text">Xin Lỗi Vợ Yêu! ❤️</div>
+
+    <script>
+        // --- CHỨC NĂNG 1: TRÁI TIM RƠI TỰ ĐỘNG ---
+        function createFallingHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('falling-heart');
+            const icons = ['❤️', '💖', '💗', '💕', '🌸'];
+            heart.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+            heart.style.left = Math.random() * 100 + "vw";
+            const duration = Math.random() * 3 + 4;
+            heart.style.animationDuration = duration + "s";
+            heart.style.fontSize = Math.random() * 20 + 20 + "px"; // To hơn một chút
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, duration * 1000);
+        }
+        setInterval(createFallingHeart, 300);
+
+        // --- CHỨC NĂNG 2: TRÁI TIM THEO CHUỘT (TO & ĐẸP) ---
+        document.addEventListener('mousemove', function(e) {
+            const heart = document.createElement('div');
+            heart.classList.add('cursor-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = e.clientX + 'px';
+            heart.style.top = e.clientY + 'px';
+
+            // Tỏa ra rộng hơn
+            const moveX = (Math.random() - 0.5) * 200 + 'px';
+            const moveY = (Math.random() - 0.5) * 200 + 'px';
+            heart.style.setProperty('--x', moveX);
+            heart.style.setProperty('--y', moveY);
+
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 1000);
+        });
+    </script>
+</body>
+</html>
